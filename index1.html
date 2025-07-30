@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Career Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            display: flex;
+            height: 600px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 20px;
+        }
+
+        .category-btn {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            color: #495057;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .category-icon {
+            font-size: 1.2rem;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #f8f9fa, white);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.assistant {
+            text-align: left;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.assistant .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .message-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .send-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #667eea;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .welcome-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .welcome-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .clear-btn {
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-indicator.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-indicator.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                border-radius: 0;
+                max-width: 100%;
+            }
+
+            .main-content {
+                flex-direction: column;
+                height: calc(100vh - 120px);
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 150px;
+                overflow-x: auto;
+                display: flex;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .category-btn {
+                min-width: 200px;
+                flex-shrink: 0;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-indicator" id="statusIndicator">🔌 Connecting...</div>
+        
+        <div class="header">
+            <h1>🤖 GenAI Career Assistant</h1>
+            <p>Your AI-powered companion for career growth in Generative AI</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <button class="category-btn active" data-category="learning">
+                    <span class="category-icon">📚</span>
+                    <span>Learn GenAI</span>
+                </button>
+                <button class="category-btn" data-category="resume">
+                    <span class="category-icon">📝</span>
+                    <span>Resume Builder</span>
+                </button>
+                <button class="category-btn" data-category="interview">
+                    <span class="category-icon">🎯</span>
+                    <span>Interview Prep</span>
+                </button>
+                <button class="category-btn" data-category="jobs">
+                    <span class="category-icon">💼</span>
+                    <span>Job Search</span>
+                </button>
+                <button class="clear-btn" onclick="clearChat()">🗑️ Clear Chat</button>
+            </div>
+
+            <div class="chat-area">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h3>Welcome to GenAI Career Assistant! 🚀</h3>
+                        <p>I'm here to help you with:</p>
+                        <p><strong>📚 Learning:</strong> Tutorials, documentation, and Q&A</p>
+                        <p><strong>📝 Resume:</strong> Create tailored AI/ML resumes</p>
+                        <p><strong>🎯 Interview:</strong> Practice questions and mock interviews</p>
+                        <p><strong>💼 Jobs:</strong> Find the latest AI opportunities</p>
+                        <p>Select a category and start chatting!</p>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            class="message-input" 
+                            id="messageInput" 
+                            placeholder="Ask me anything about GenAI careers..."
+                            onkeypress="handleKeyPress(event)"
+                        >
+                        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                            Send 🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = 'learning';
+        let isLoading = false;
+        let conversationHistory = [];
+
+        // API Configuration
+        const API_BASE_URL = 'http://127.0.0.1:8000';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAPIConnection();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.dataset.category) {
+                        selectCategory(this.dataset.category);
+                        updateActiveButton(this);
+                    }
+                });
+            });
+        }
+
+        function updateActiveButton(activeBtn) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeBtn.classList.add('active');
+        }
+
+        function selectCategory(category) {
+            currentCategory = category;
+            const suggestions = {
+                learning: "Try asking: 'How do I get started with prompt engineering?' or 'Create a tutorial on fine-tuning LLMs'",
+                resume: "Try asking: 'Help me create a resume for an AI Engineer position' or 'What skills should I highlight?'",
+                interview: "Try asking: 'Give me common GenAI interview questions' or 'Start a mock interview'",
+                jobs: "Try asking: 'Find AI Engineer jobs in San Francisco' or 'Show me remote ML opportunities'"
+            };
+            
+            document.getElementById('messageInput').placeholder = suggestions[category];
+        }
+
+        async function checkAPIConnection() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                if (response.ok) {
+                    statusIndicator.textContent = '🟢 Connected';
+                    statusIndicator.className = 'status-indicator connected';
+                } else {
+                    throw new Error('API not responding');
+                }
+            } catch (error) {
+                statusIndicator.textContent = '🔴 Disconnected';
+                statusIndicator.className = 'status-indicator disconnected';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || isLoading) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show loading
+            setLoading(true);
+            addLoadingMessage();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Remove loading message
+                removeLoadingMessage();
+                
+                if (response.ok) {
+                    addMessage(data.response, 'assistant');
+                    conversationHistory.push({
+                        user: message,
+                        assistant: data.response,
+                        category: data.category
+                    });
+                } else {
+                    throw new Error(data.response || 'Failed to get response');
+                }
+
+            } catch (error) {
+                removeLoadingMessage();
+                addMessage(`Sorry, I encountered an error: ${error.message}. Please make sure the API server is running on http://127.0.0.1:8000 `, 'assistant');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function addMessage(content, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            
+            // Format the content (preserve line breaks and make it readable)
+            const formattedContent = formatMessage(content);
+            bubbleDiv.innerHTML = formattedContent;
+            
+            messageDiv.appendChild(bubbleDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Remove welcome message if it exists
+            const welcomeMessage = chatMessages.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function formatMessage(content) {
+            // Convert markdown-like formatting to HTML
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code style="background: #f1f3f4; padding: 2px 4px; border-radius: 4px; font-family: monospace;">$1</code>')
+                .replace(/\n/g, '<br>')
+                .replace(/###\s*(.*?)(<br>|$)/g, '<h4 style="color: #667eea; margin: 10px 0 5px 0;">$1</h4>')
+                .replace(/##\s*(.*?)(<br>|$)/g, '<h3 style="color: #667eea; margin: 15px 0 8px 0;">$1</h3>')
+                .replace(/#\s*(.*?)(<br>|$)/g, '<h2 style="color: #667eea; margin: 20px 0 10px 0;">$1</h2>');
+        }
+
+        function addLoadingMessage() {
+            const chatMessages = document.getElementById('chatMessages');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message assistant';
+            loadingDiv.id = 'loadingMessage';
+            
+            loadingDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="loading">
+                        <span>Thinking</span>
+                        <div class="loading-dots">
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeLoadingMessage() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+
+        function setLoading(loading) {
+            isLoading = loading;
+            const sendBtn = document.getElementById('sendBtn');
+            const input = document.getElementById('messageInput');
+            
+            sendBtn.disabled = loading;
+            input.disabled = loading;
+            
+            if (loading) {
+                sendBtn.textContent = 'Sending...';
+            } else {
+                sendBtn.textContent = 'Send 🚀';
+            }
+        }
+
+        function clearChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="welcome-message">
+                    <h3>Chat Cleared! 🧹</h3>
+                    <p>Ready for a fresh conversation. What would you like to know about GenAI careers?</p>
+                </div>
+            `;
+            conversationHistory = [];
+        }
+
+        // Auto-resize input on mobile
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.scrollLeft = 0;
+            }
+        });
+
+        // Add some example interactions for demo
+        const examples = {
+            learning: [
+                "What are the fundamentals of prompt engineering?",
+                "Create a tutorial on RAG implementation",
+                "How do I fine-tune a language model?"
+            ],
+            resume: [
+                "Help me create a resume for ML Engineer role",
+                "What skills should I highlight for GenAI positions?",
+                "Review my AI project descriptions"
+            ],
+            interview: [
+                "Give me common LLM interview questions",
+                "Start a mock interview for AI Engineer role",
+                "What should I prepare for GenAI interviews?"
+            ],
+            jobs: [
+                "Find AI Engineer jobs in New York",
+                "Show me remote GenAI opportunities",
+                "What are the latest AI startup openings?"
+            ]
+        };
+
+        // Add example suggestions on category change
+        function showExamples() {
+            const categoryExamples = examples[currentCategory] || [];
+            if (categoryExamples.length > 0) {
+                const randomExample = categoryExamples[Math.floor(Math.random() * categoryExamples.length)];
+                document.getElementById('messageInput').placeholder = `Try: "${randomExample}"`;
+            }
+        }
+    </script>
+</body>
+</html>
