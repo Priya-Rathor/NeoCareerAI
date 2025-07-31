@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 from datetime import datetime
+from IPython.display import display , Image , Markdown
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -18,9 +19,29 @@ load_dotenv()
 # Initialize LLM
 llm = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
 
+# DuckDuckGo search tool
+
+ddg_search = DuckDuckGoSearchResults(
+    backend="api",
+    max_results=3,
+    time_limit="Y",
+)
+
 # In-memory storage for conversations
 conversation_memory = {}
 
+
+def show_md_file(content):
+    """Saves content to a temp file and displays it"""
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+        f.write(content)
+        f.flush()
+        display(Markdown(content))
+        return f.name
+    
+    
+    
 class State(TypedDict):
     query: str
     category: str
@@ -122,60 +143,139 @@ def categorize(state: State) -> State:
     return {"category": category}
 
 def handle_learning_resource(state: State) -> State:
-    """Determines if the query is related to Tutorial creation or general Questions on generative AI topics."""
     prompt = ChatPromptTemplate.from_template(
-        "Categorize the following user query into one of these categories:\n\n"
-        "Categories:\n"
-        "- Tutorial: For queries related to creating tutorials, blogs, or documentation on generative AI.\n"
-        "- Question: For general queries asking about generative AI topics.\n"
-        "- Default to Question if the query doesn't fit either of these categories.\n\n"
-        "Examples:\n"
-        "1. User query: 'How to create a blog on prompt engineering for generative AI?' -> Category: Tutorial\n"
-        "2. User query: 'Can you provide a step-by-step guide on fine-tuning a generative model?' -> Category: Tutorial\n"
-        "3. User query: 'Provide me the documentation for Langchain?' -> Category: Tutorial\n"
-        "4. User query: 'What are the main applications of generative AI?' -> Category: Question\n"
-        "5. User query: 'Is there any generative AI course available?' -> Category: Question\n\n"
-        "Now, categorize the following user query:\n"
-        "The user query is: {query}\n"
+        "Categorize the following user query:\n"
+        "- Tutorial: For creating tutorials, blogs, or documentation\n"
+        "- Question: For general questions about generative AI\n"
+        "Give 'Tutorial' or 'Question' only.\n\n"
+        "Query: {query}"
     )
-
-    # Creates a further categorization chain to decide between Tutorial or Question
-    chain = prompt | llm 
-    print('Categorizing the customer query further...')
+    
+    chain = prompt | llm
     response = chain.invoke({"query": state["query"]}).content
     return {"category": response}
-
 
 def handle_interview_preparation(state: State) -> State:
-    """Determines if the query is related to Mock Interviews or general Interview Questions."""
     prompt = ChatPromptTemplate.from_template(
-        "Categorize the following user query into one of these categories:\n\n"
-        "Categories:\n"
-        "- Mock: For requests related to mock interviews.\n"
-        "- Question: For general queries asking about interview topics or preparation.\n"
-        "- Default to Question if the query doesn't fit either of these categories.\n\n"
-        "Examples:\n"
-        "1. User query: 'Can you conduct a mock interview with me for a Gen AI role?' -> Category: Mock\n"
-        "2. User query: 'What topics should I prepare for an AI Engineer interview?' -> Category: Question\n"
-        "3. User query: 'I need to practice interview focused on Gen AI.' -> Category: Mock\n"
-        "4. User query: 'Can you list important coding topics for AI tech interviews?' -> Category: Question\n\n"
-        "Now, categorize the following user query:\n"
-        "The user query is: {query}\n"
+        "Categorize the following user query:\n"
+        "- Mock: For mock interviews\n"
+        "- Question: For interview questions or preparation\n"
+        "Give 'Mock' or 'Question' only.\n\n"
+        "Query: {query}"
     )
-
-    # Creates a further categorization chain to decide between Mock or Question
-    chain = prompt | llm 
-    print('Categorizing the customer query further...')
+    
+    chain = prompt | llm
     response = chain.invoke({"query": state["query"]}).content
     return {"category": response}
+
+
 
 def job_search(state: State) -> State:
     """Provide a job search response based on user query requirements."""
-    prompt = ChatPromptTemplate.from_template('''Your task is to refactor and make .md file for the this content which includes
-    the jobs available in the market. Refactor such that user can refer easily. Content: {result}''')
-    jobSearch = JobSearch(prompt)
-    path = jobSearch.find_jobs(state["query"])
-    return {"response": path}
+    query = state["query"].strip()
+    
+    # More flexible validation that handles different phrasings
+    if not any(phrase in query.lower() for phrase in ["looking for", "find", "search for"]) or " in " not in query.lower():
+        return {
+            "response": "🔍 Please format your job search request clearly:\n\n"
+                       "**Looking for [Job Role] in [Location]**\n\n"
+                       "Examples:\n"
+                       "- \"Looking for Data Scientist in London\"\n"
+                       "- \"Find Machine Learning Engineer positions in Bangalore\"\n"
+                       "- \"Search for AI Researcher roles in New York\""
+        }
+    
+    try:
+        # Improved query parsing
+        if "looking for" in query.lower():
+            role_part = query.split("looking for")[1].split(" in ")[0].strip()
+        else:
+            role_part = query.split(" in ")[0].replace("find", "").replace("search for", "").strip()
+        
+        role = role_part.replace("positions", "").replace("roles", "").strip()
+        location = query.split(" in ")[1].split(" for ")[0].strip()
+        
+        # Get results with better error handling
+        results = get_job_results(role, location)
+        
+        if results and "no results" not in results.lower():
+            return {
+                "response": f"✅ Here are current opportunities for {role} in {location}:\n\n{results}\n\n"
+                          f"💡 Tip: For more options, try [LinkedIn Jobs](https://www.linkedin.com/jobs) or [Indeed](https://www.indeed.com)"
+            }
+        else:
+            return {
+                "response": f"⚠️ Couldn't find current openings for {role} in {location}.\n\n"
+                          f"Suggestions:\n"
+                          f"1. Try broader search terms (e.g., 'AI Engineer' instead of 'PyTorch Specialist')\n"
+                          f"2. Check these direct links:\n"
+                          f"   - [LinkedIn {role} jobs in {location}](https://www.linkedin.com/jobs/search/?keywords={role.replace(' ', '%20')}&location={location.replace(' ', '%20')})\n"
+                          f"   - [Indeed {role} jobs in {location}](https://www.indeed.com/jobs?q={role.replace(' ', '%20')}&l={location.replace(' ', '%20')})\n"
+                          f"3. Try again in 30 minutes"
+            }
+            
+    except Exception as e:
+        error_msg = str(e)
+        if "rate limit" in error_msg.lower() or "202" in error_msg:
+            error_display = "Our job search service is currently busy."
+        else:
+            error_display = "There was an unexpected error."
+            
+        return {
+            "response": f"⚠️ {error_display}\n\n"
+                      f"Please try these alternatives:\n"
+                      f"1. [LinkedIn Jobs](https://www.linkedin.com/jobs)\n"
+                      f"2. [Indeed](https://www.indeed.com)\n"
+                      f"3. [Glassdoor](https://www.glassdoor.com/Jobs/index.htm)\n\n"
+                      f"Or try your search again in 15 minutes."
+        }
+
+
+
+
+
+def get_job_results(role: str, location: str, retries: int = 2) -> str:
+    """Helper function to handle job searches with retries"""
+    import time
+    import random
+    
+    for attempt in range(retries + 1):
+        try:
+            prompt = ChatPromptTemplate.from_template('''
+            Find current job openings for {role} in {location}.
+            Return 3-5 results in this format:
+            
+            ### {role} Opportunities in {location}
+            
+            [Company Name] - [Job Title]
+            - Location: [Specific Address/Area]
+            - Skills: [Key skills required]
+            - Apply: [Link or "Company website"]
+            
+            If no results found, say "No recent openings found."
+            ''')
+            
+            jobSearch = JobSearch(prompt)
+            
+            # Random delay to avoid rate limiting (1-3 seconds)
+            time.sleep(1 + random.random() * 2)
+            
+            results = jobSearch.find_jobs(f"{role} in {location}")
+            
+            if "no results" in results.lower() or "no openings" in results.lower():
+                return ""
+                
+            return results
+            
+        except Exception as e:
+            if attempt == retries:
+                raise e
+            time.sleep(3)  # Wait longer between retries
+    
+    return ""
+
+
+
 
 def handle_resume_making(state: State) -> State:
     """Generate a customized resume based on user details for a tech role in AI and Generative AI."""
@@ -203,8 +303,11 @@ def ask_query_bot(state: State) -> State:
     prompt = [SystemMessage(content=system_message)]
 
     learning_agent = LearningResourceAgent(prompt)
+
     path = learning_agent.QueryBot(state["query"])
+    show_md_file(path)
     return {"response": path}
+
 
 def tutorial_agent(state: State) -> State:
     """Generate a tutorial blog for Generative AI based on user requirements."""
@@ -217,8 +320,11 @@ def tutorial_agent(state: State) -> State:
             ("placeholder", "{chat_history}"),
             ("human", "{input}"),
             ("placeholder", "{agent_scratchpad}"),])
+    #agent_scratchpad is a function that formats the intermediate steps of the agent's actions and observations into a string. 
+    #This function is used to keep track of the agent's thoughts or actions during the execution of the program. But its not necessary, we can do without this so we will not include it only define it.
     learning_agent = LearningResourceAgent(prompt)
     path = learning_agent.TutorialAgent(state["query"])
+    show_md_file(path)
     return {"response": path}
 
 def interview_topics_questions(state: State) -> State:
@@ -234,6 +340,7 @@ def interview_topics_questions(state: State) -> State:
                         ("placeholder", "{agent_scratchpad}"),])
     interview_agent = InterviewAgent(prompt)
     path = interview_agent.Interview_questions(state["query"])
+    show_md_file(path)
     return {"response": path}
 
 def mock_interview(state: State) -> State:
@@ -245,7 +352,9 @@ def mock_interview(state: State) -> State:
     prompt = [SystemMessage(content=system_message)]
     interview_agent = InterviewAgent(prompt)
     path = interview_agent.Mock_Interview()
+    show_md_file(path)
     return {"response": path}
+
 
 # Routing functions
 def route_query(state: State):
@@ -385,4 +494,4 @@ async def process_query(data: QueryRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

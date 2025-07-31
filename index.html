@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenAI Career Assistant - Your AI-Powered Career Companion</title>
+    <title>GenAI Career Assistant</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,867 +13,753 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #ffffff;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            color: #333;
         }
 
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 15, 35, 0.95);
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            z-index: 1000;
             padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 2rem;
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 1.5rem;
-            font-weight: 700;
-            color: #00d4aa;
-            text-decoration: none;
+            font-weight: bold;
+            color: #667eea;
         }
 
-        .nav-links {
+        .nav-menu {
             display: flex;
             list-style: none;
             gap: 2rem;
         }
 
-        .nav-links a {
-            color: #ffffff;
+        .nav-menu a {
             text-decoration: none;
-            transition: color 0.3s ease;
+            color: #333;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
-        .nav-links a:hover {
-            color: #00d4aa;
+        .nav-menu a:hover {
+            color: #667eea;
         }
 
-        .cta-button {
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.3);
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
         /* Hero Section */
         .hero {
-            margin-top: 80px;
-            padding: 4rem 2rem;
             text-align: center;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff, #00d4aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #b8b8d1;
-            line-height: 1.8;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
             color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
+            margin-bottom: 3rem;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 212, 170, 0.4);
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: #ffffff;
-            padding: 1rem 2rem;
-            border: 2px solid #ffffff;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: #ffffff;
-            color: #0f0f23;
-            transform: translateY(-3px);
-        }
-
-        .hero-visual {
-            position: relative;
-        }
-
-        .resume-preview {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .resume-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .resume-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .resume-info p {
-            color: #b8b8d1;
-            font-size: 0.9rem;
-        }
-
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.1);
-            height: 8px;
-            border-radius: 4px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
-            border-radius: 4px;
-            animation: fillProgress 2s ease-out;
-        }
-
-        @keyframes fillProgress {
-            from { width: 0%; }
-            to { width: 85%; }
-        }
-
-        /* Features Section */
-        .features {
-            padding: 6rem 2rem;
-            max-width: 1200px;
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #ffffff;
-        }
-
-        .features-grid {
+        /* Service Cards */
+        .services {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
             text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
 
-        .feature-card:hover {
+        .service-card:hover {
             transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: #667eea;
         }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
+        .service-card.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
         }
 
-        .feature-card h3 {
+        .service-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #ffffff;
+            color: #333;
         }
 
-        .feature-card p {
-            color: #b8b8d1;
+        .service-card p {
+            color: #666;
             line-height: 1.6;
         }
 
-        /* Query Interface */
-        .query-section {
-            padding: 6rem 2rem;
-            background: rgba(0, 0, 0, 0.2);
+        /* Chat Interface */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .query-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .chat-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
             text-align: center;
         }
 
-        .query-container h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #ffffff;
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f8f9fa;
         }
 
-        .query-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 2rem;
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: #667eea;
+        }
+
+        .message.assistant .message-avatar {
+            background: #28a745;
+        }
+
+        .message-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            max-width: 70%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-content {
+            background: #667eea;
+            color: white;
+        }
+
+        .message-content pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+
+        .message.user .message-content pre {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Input Area */
+        .chat-input {
+            padding: 1.5rem;
+            background: white;
+            border-top: 1px solid #eee;
         }
 
         .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        .query-input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1.1rem;
+        .chat-input input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            font-size: 1rem;
             outline: none;
-            transition: all 0.3s ease;
-            resize: vertical;
-            min-height: 120px;
+            transition: border-color 0.3s;
         }
 
-        .query-input:focus {
-            border-color: #00d4aa;
-            box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+        .chat-input input:focus {
+            border-color: #667eea;
         }
 
-        .query-input::placeholder {
-            color: #b8b8d1;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
+        .send-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
-            padding: 1rem 3rem;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            width: auto;
-            min-width: 200px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 212, 170, 0.4);
+        .send-btn:hover {
+            transform: scale(1.1);
         }
 
-        .submit-btn:disabled {
-            opacity: 0.7;
+        .send-btn:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .submit-btn.conversation-mode {
-            background: linear-gradient(135deg, #9d4edd, #6b46c1);
-        }
-
-        .submit-btn.conversation-mode:hover {
-            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.4);
-        }
-
+        /* Loading Animation */
         .loading {
-            display: inline-block;
-            margin-left: 10px;
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading.show {
+            display: block;
         }
 
         .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #ffffff;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
             border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Response Section */
-        .response-section {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-            text-align: left;
-        }
-
-        .response-section.show {
-            display: block;
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .category-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #00d4aa, #007a5e);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .response-content {
-            color: #ffffff;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-
-        .response-content h1, .response-content h2, .response-content h3 {
-            color: #00d4aa;
-            margin: 1.5rem 0 1rem 0;
-        }
-
-        .response-content h1 {
-            font-size: 2rem;
-            border-bottom: 2px solid #00d4aa;
-            padding-bottom: 0.5rem;
-        }
-
-        .response-content h2 {
-            font-size: 1.5rem;
-        }
-
-        .response-content h3 {
-            font-size: 1.25rem;
-        }
-
-        .response-content p {
-            margin: 1rem 0;
-        }
-
-        .response-content ul, .response-content ol {
-            margin: 1rem 0;
-            padding-left: 2rem;
-        }
-
-        .response-content li {
-            margin: 0.5rem 0;
-        }
-
-        .response-content blockquote {
-            border-left: 4px solid #00d4aa;
-            margin: 1rem 0;
-            padding-left: 1rem;
-            color: #b8b8d1;
-            font-style: italic;
-        }
-
-        .response-content code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #00d4aa;
-        }
-
-        .response-content pre {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .response-content pre code {
-            background: none;
-            padding: 0;
-            color: #ffffff;
-        }
-
-        .response-content a {
-            color: #00d4aa;
-            text-decoration: none;
-        }
-
-        .response-content a:hover {
-            text-decoration: underline;
-        }
-
-        /* Conversation Mode */
-        .conversation-mode {
-            background: rgba(157, 78, 221, 0.1);
-            border: 1px solid rgba(157, 78, 221, 0.3);
-            border-radius: 15px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        .conversation-mode.active {
-            display: block;
-        }
-
-        .session-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .session-badge {
-            background: linear-gradient(135deg, #9d4edd, #6b46c1);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .end-conversation-btn {
-            background: rgba(220, 38, 127, 0.8);
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .end-conversation-btn:hover {
-            background: rgba(220, 38, 127, 1);
-        }
-
-        /* Chat History */
-        .chat-history {
-            max-height: 400px;
-            overflow-y: auto;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .chat-message {
-            margin: 1rem 0;
-            padding: 1rem;
-            border-radius: 10px;
-        }
-
-        .user-message {
-            background: rgba(0, 212, 170, 0.1);
-            border-left: 3px solid #00d4aa;
-        }
-
-        .assistant-message {
-            background: rgba(157, 78, 221, 0.1);
-            border-left: 3px solid #9d4edd;
-        }
-
-        /* Footer */
-        .footer {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 3rem 2rem 1rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-content {
-            max-width: 1200px;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
             margin: 0 auto;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .footer-links a {
-            color: #b8b8d1;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        /* Quick Actions */
+        .quick-actions {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
         }
 
-        .footer-links a:hover {
-            color: #00d4aa;
-        }
-
-        .footer p {
-            color: #b8b8d1;
+        .quick-actions h4 {
+            margin-bottom: 0.5rem;
+            color: #666;
             font-size: 0.9rem;
         }
 
-        /* Error and Success States */
-        .error-message {
-            background: rgba(220, 38, 127, 0.2);
-            border: 1px solid rgba(220, 38, 127, 0.5);
-            color: #ff6b9d;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            display: none;
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
-        .success-message {
-            background: rgba(0, 212, 170, 0.2);
-            border: 1px solid rgba(0, 212, 170, 0.5);
-            color: #00d4aa;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            display: none;
+        .action-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
             .nav-container {
                 padding: 0 1rem;
             }
 
-            .hero, .features, .query-section {
-                padding: 3rem 1rem;
+            .nav-menu {
+                display: none;
             }
 
-            .submit-btn, .conversation-btn {
-                width: 100%;
-                margin: 0.5rem 0;
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .services {
+                grid-template-columns: 1fr;
+            }
+
+            .message-content {
+                max-width: 85%;
             }
         }
 
-        /* Additional Animations */
-        .fade-in {
-            animation: fadeIn 1s ease-out;
+        /* Status Indicator */
+        .status-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1001;
+            transition: all 0.3s;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .status-indicator.online {
+            background: #28a745;
+            color: white;
         }
 
-        .slide-up {
-            animation: slideUp 0.8s ease-out;
+        .status-indicator.offline {
+            background: #dc3545;
+            color: white;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Features Section */
+        .features {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .features h2 {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .feature-item i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
+    <!-- Status Indicator -->
+    <div class="status-indicator online" id="statusIndicator">
+        <i class="fas fa-circle"></i> Online
+    </div>
+
+    <!-- Header -->
+    <header class="header">
         <div class="nav-container">
-            <a href="#" class="logo">
-                <i class="fas fa-robot"></i> GenAI Career Assistant
-            </a>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#assistant">Assistant</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            <a href="#assistant" class="cta-button">Try Now</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content fade-in">
-                <h1>Your AI-Powered Career Companion</h1>
-                <p>Transform your career journey with our comprehensive GenAI assistant. From learning resources to resume optimization, interview preparation to job search - we've got you covered.</p>
-                <div class="hero-buttons">
-                    <a href="#assistant" class="btn-primary">Get Started</a>
-                    <a href="#features" class="btn-secondary">Learn More</a>
-                </div>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                GenAI Career Assistant
             </div>
-            <div class="hero-visual slide-up">
-                <div class="resume-preview">
-                    <div class="resume-header">
-                        <div class="avatar">AI</div>
-                        <div class="resume-info">
-                            <h3>Alex Johnson</h3>
-                            <p>AI Engineer</p>
-                        </div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 85%;"></div>
-                    </div>
-                    <p style="font-size: 0.9rem; color: #b8b8d1;">Resume Score: 85% - Excellent</p>
-                </div>
-            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#chat">Assistant</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
         </div>
-    </section>
+    </header>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <h2 class="fade-in">Everything You Need for Career Success</h2>
-        <div class="features-grid">
-            <div class="feature-card slide-up">
-                <div class="feature-icon">
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1>Your AI-Powered Career Companion</h1>
+            <p>Master Generative AI, build your resume, prepare for interviews, and find your dream job - all in one place</p>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services" id="services">
+            <div class="service-card" data-service="learning">
+                <div class="service-icon">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
-                <h3>Learning Resources</h3>
-                <p>Access comprehensive tutorials, documentation, and expert guidance on Generative AI technologies. Get personalized learning paths tailored to your goals.</p>
+                <h3>Learn Generative AI</h3>
+                <p>Interactive tutorials, documentation, and expert guidance to master AI technologies</p>
             </div>
-            <div class="feature-card slide-up" style="animation-delay: 0.2s;">
-                <div class="feature-icon">
+
+            <div class="service-card" data-service="resume">
+                <div class="service-icon">
                     <i class="fas fa-file-alt"></i>
                 </div>
-                <h3>Resume Optimization</h3>
-                <p>Create compelling resumes optimized for AI and tech roles. Our AI analyzes job requirements and tailors your resume for maximum impact.</p>
+                <h3>Resume Builder</h3>
+                <p>Create professional resumes tailored for AI and tech roles with industry best practices</p>
             </div>
-            <div class="feature-card slide-up" style="animation-delay: 0.4s;">
-                <div class="feature-icon">
-                    <i class="fas fa-comments"></i>
+
+            <div class="service-card" data-service="interview">
+                <div class="service-icon">
+                    <i class="fas fa-user-tie"></i>
                 </div>
-                <h3>Interview Preparation</h3>
-                <p>Practice with our mock interview system and get curated questions for GenAI roles. Receive detailed feedback to improve your performance.</p>
+                <h3>Interview Prep</h3>
+                <p>Mock interviews and curated questions to ace your AI engineering interviews</p>
             </div>
-            <div class="feature-card slide-up" style="animation-delay: 0.6s;">
-                <div class="feature-icon">
+
+            <div class="service-card" data-service="jobs">
+                <div class="service-icon">
                     <i class="fas fa-search"></i>
                 </div>
                 <h3>Job Search</h3>
-                <p>Find relevant opportunities in the AI field with our intelligent job search. Get personalized recommendations based on your skills and preferences.</p>
+                <p>Find relevant AI and ML job opportunities tailored to your skills and location</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Query Interface -->
-    <section id="assistant" class="query-section">
-        <div class="query-container">
-            <h2 class="fade-in">Ask Your Career Assistant</h2>
-            
-            <!-- Conversation Mode Indicator -->
-            <div id="conversationMode" class="conversation-mode">
-                <div class="session-info">
-                    <span class="session-badge">
-                        <i class="fas fa-comments"></i> Conversation Mode Active
-                    </span>
-                    <button class="end-conversation-btn" onclick="endConversation()">
-                        <i class="fas fa-times"></i> End Session
+        <!-- Chat Interface -->
+        <section class="chat-container" id="chat">
+            <div class="chat-header">
+                <h2><i class="fas fa-comments"></i> AI Career Assistant</h2>
+                <p>Ask me anything about AI careers, learning, or job opportunities!</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Hello! I'm your GenAI Career Assistant. I can help you with:</p>
+                        <ul>
+                            <li>📚 Learning Generative AI technologies</li>
+                            <li>📄 Creating professional resumes</li>
+                            <li>🎯 Interview preparation and mock interviews</li>
+                            <li>💼 Finding relevant job opportunities</li>
+                        </ul>
+                        <p>How can I assist you today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h4>Quick Actions:</h4>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="sendQuickMessage('Create a tutorial on transformer models')">
+                        <i class="fas fa-book"></i> AI Tutorial
+                    </button>
+                    <button class="action-btn" onclick="sendQuickMessage('Help me create a resume for AI Engineer position')">
+                        <i class="fas fa-file"></i> Build Resume
+                    </button>
+                    <button class="action-btn" onclick="sendQuickMessage('Start a mock interview for machine learning engineer')">
+                        <i class="fas fa-microphone"></i> Mock Interview
+                    </button>
+                    <button class="action-btn" onclick="sendQuickMessage('Looking for AI Engineer jobs in San Francisco')">
+                        <i class="fas fa-briefcase"></i> Find Jobs
                     </button>
                 </div>
-                <div id="chatHistory" class="chat-history"></div>
             </div>
 
-            <div class="query-form">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+
+            <div class="chat-input">
                 <div class="input-group">
-                    <textarea 
-                        id="queryInput" 
-                        class="query-input" 
-                        placeholder="Ask me anything about your AI career journey... 
-
-Examples:
-• 'How can I learn prompt engineering for generative AI?'
-• 'Help me improve my resume for an AI engineer position'
-• 'What questions should I prepare for a GenAI interview?'
-• 'Find me AI engineering jobs in San Francisco'
-• 'I want to start a mock interview for GenAI role'"
-                        rows="4"
-                    ></textarea>
-                </div>
-                <div style="text-align: center;">
-                    <button type="button" class="submit-btn" id="submitBtn">
-                        <i class="fas fa-paper-plane"></i> <span id="btnText">Send Query</span>
-                        <span class="loading" id="loadingSpinner" style="display: none;">
-                            <div class="spinner"></div>
-                        </span>
+                    <input type="text" id="messageInput" placeholder="Ask me about AI careers, learning, interviews, or job search..." autocomplete="off">
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
-                
-                <div id="errorMessage" class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i> Something went wrong. Please try again.
-                </div>
-                
-                <div id="successMessage" class="success-message">
-                    <i class="fas fa-check-circle"></i> Query processed successfully!
-                </div>
             </div>
+        </section>
 
-            <div id="responseSection" class="response-section">
-                <div class="category-badge" id="categoryBadge">
-                    <i class="fas fa-tag"></i> Category
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Why Choose Our AI Career Assistant?</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-brain"></i>
+                    <h4>AI-Powered Guidance</h4>
+                    <p>Get personalized career advice powered by advanced AI technology</p>
                 </div>
-                <div class="response-content" id="responseContent">
-                    Your response will appear here...
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>24/7 Availability</h4>
+                    <p>Access career assistance anytime, anywhere with our always-on AI assistant</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Industry Insights</h4>
+                    <p>Stay updated with the latest trends and requirements in AI and tech industries</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <h4>Expert Knowledge</h4>
+                    <p>Benefit from knowledge curated by industry experts and successful professionals</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#assistant">Assistant</a>
-                <a href="#about">About</a>
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#terms">Terms of Service</a>
-            </div>
-            <p>&copy; 2025 GenAI Career Assistant. Empowering your AI career journey.</p>
-        </div>
-    </footer>
+        </section>
+    </div>
 
     <script>
         // Global variables
-        let conversationActive = false;
-        let sessionId = null;
-        let chatHistory = [];
+        let conversationHistory = [];
+        const API_BASE_URL = 'http://localhost:8000'; // Adjust this to your backend URL
 
-        // Generate unique session ID
-        function generateSessionId() {
-            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        // DOM elements
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const loading = document.getElementById('loading');
+        const statusIndicator = document.getElementById('statusIndicator');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerStatus();
+            setupEventListeners();
+            
+            // Auto-scroll to chat section when service cards are clicked
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Scroll to chat
+                    document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Set focus to input
+                    setTimeout(() => messageInput.focus(), 500);
+                });
+            });
+        });
+
+        function setupEventListeners() {
+            // Enter key to send message
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Auto-resize input
+            messageInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
         }
 
-        // Smooth scrolling for navigation links
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/docs`);
+                if (response.ok) {
+                    updateStatus('online');
+                } else {
+                    updateStatus('offline');
+                }
+            } catch (error) {
+                updateStatus('offline');
+            }
+        }
+
+        function updateStatus(status) {
+            const indicator = statusIndicator;
+            indicator.className = `status-indicator ${status}`;
+            indicator.innerHTML = status === 'online' 
+                ? '<i class="fas fa-circle"></i> Online' 
+                : '<i class="fas fa-times-circle"></i> Offline';
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message || sendBtn.disabled) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+
+            // Disable input and show loading
+            toggleLoading(true);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Add assistant response
+                addMessage(data.response, 'assistant', data.category);
+                
+                updateStatus('online');
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, I encountered an error. Please check if the server is running and try again.', 'assistant', 'error');
+                updateStatus('offline');
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        function sendQuickMessage(message) {
+            messageInput.value = message;
+            sendMessage();
+        }
+
+        function addMessage(content, sender, category = '') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+
+            // Format message content
+            const formattedContent = formatMessage(content, category);
+            messageContent.innerHTML = formattedContent;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+
+            // Add to conversation history
+            conversationHistory.push({ sender, content, category, timestamp: new Date() });
+        }
+
+        function formatMessage(content, category) {
+            // Handle markdown-style formatting
+            let formatted = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/\n/g, '<br>');
+
+            // Handle lists
+            formatted = formatted.replace(/^\- (.*$)/gim, '<li>$1</li>');
+            formatted = formatted.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+            // Handle numbered lists
+            formatted = formatted.replace(/^\d+\. (.*$)/gim, '<li>$1</li>');
+
+            // Handle links
+            formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+            // Add category badge if present
+            if (category && category !== 'general') {
+                const badges = {
+                    'learning': '<span class="badge" style="background: #28a745;">🎓 Learning</span>',
+                    'resume': '<span class="badge" style="background: #17a2b8;">📄 Resume</span>',
+                    'interview': '<span class="badge" style="background: #ffc107; color: #000;">🎯 Interview</span>',
+                    'jobs': '<span class="badge" style="background: #6f42c1;">💼 Jobs</span>',
+                    'error': '<span class="badge" style="background: #dc3545;">❌ Error</span>'
+                };
+                
+                if (badges[category.toLowerCase()]) {
+                    formatted = badges[category.toLowerCase()] + '<br>' + formatted;
+                }
+            }
+
+            return formatted;
+        }
+
+        function toggleLoading(show) {
+            loading.classList.toggle('show', show);
+            sendBtn.disabled = show;
+            messageInput.disabled = show;
+            
+            if (show) {
+                scrollToBottom();
+            }
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -885,316 +768,23 @@ Examples:
                     target.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
-                </script>
-</body>
-</html>
-                }
-            });
-        });
-
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.slide-up, .fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Main query submission function
-        async function submitQuery() {
-            const queryInput = document.getElementById('queryInput');
-            const submitBtn = document.querySelector('.submit-btn');
-            const loading = document.querySelector('.loading');
-            const responseSection = document.getElementById('responseSection');
-            const categoryBadge = document.getElementById('categoryBadge');
-            const responseContent = document.getElementById('responseContent');
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-
-            const query = queryInput.value.trim();
-
-            // Reset messages
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-            responseSection.classList.remove('show');
-
-            if (!query) {
-                showError('Please enter a query before submitting.');
-                return;
-            }
-
-            // Show loading state
-            submitBtn.disabled = true;
-            loading.style.display = 'inline-block';
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Processing... <span class="loading"><div class="spinner"></div></span>';
-
-            try {
-                const endpoint = conversationActive ? '/conversation' : '/query';
-                const requestBody = conversationActive ? 
-                    { 
-                        query: query, 
-                        session_id: sessionId,
-                        continue_conversation: true 
-                    } : 
-                    { 
-                        query: query, 
-                        session_id: sessionId || generateSessionId() 
-                    };
-
-                const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                if (conversationActive) {
-                    // Handle conversation response
-                    handleConversationResponse(data, query);
-                } else {
-                    // Handle regular query response
-                    displayResponse(data);
-                    if (!sessionId) {
-                        sessionId = data.session_id || generateSessionId();
-                    }
-                }
-
-                successMessage.style.display = 'block';
-                queryInput.value = '';
-
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Failed to process your query. Please make sure the API server is running on http://127.0.0.1:8000');
-            } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                loading.style.display = 'none';
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Query';
-            }
-        }
-
-        // Start conversation mode
-        async function startConversation() {
-            const queryInput = document.getElementById('queryInput');
-            const query = queryInput.value.trim();
-
-            if (!query) {
-                showError('Please enter a query to start the conversation.');
-                return;
-            }
-
-            conversationActive = true;
-            sessionId = generateSessionId();
-            chatHistory = [];
-
-            // Update UI
-            document.getElementById('conversationMode').classList.add('active');
-            document.getElementById('conversationBtn').innerHTML = '<i class="fas fa-comments"></i> Continue Chat';
-            document.getElementById('conversationBtn').disabled = true;
-
-            // Submit initial query
-            await submitQuery();
-        }
-
-        // End conversation
-        async function endConversation() {
-            try {
-                // Send end conversation signal
-                await fetch('http://127.0.0.1:8000/conversation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        query: 'exit',
-                        session_id: sessionId
-                    })
-                });
-
-                // Clear session
-                if (sessionId) {
-                    await fetch(`http://127.0.0.1:8000/session/${sessionId}`, {
-                        method: 'DELETE'
                     });
                 }
-            } catch (error) {
-                console.error('Error ending conversation:', error);
-            }
-
-            // Reset UI
-            conversationActive = false;
-            sessionId = null;
-            chatHistory = [];
-            document.getElementById('conversationMode').classList.remove('active');
-            document.getElementById('conversationBtn').innerHTML = '<i class="fas fa-comments"></i> Start Conversation';
-            document.getElementById('conversationBtn').disabled = false;
-            document.getElementById('chatHistory').innerHTML = '';
-            document.getElementById('responseSection').classList.remove('show');
-        }
-
-        // Handle conversation response
-        function handleConversationResponse(data, userQuery) {
-            // Add to chat history
-            chatHistory.push({ role: 'user', content: userQuery });
-            chatHistory.push({ role: 'assistant', content: data.response });
-
-            // Update chat history display
-            updateChatHistory();
-
-            // If conversation ended
-            if (data.conversation_ended) {
-                endConversation();
-            }
-        }
-
-        // Update chat history display
-        function updateChatHistory() {
-            const chatHistoryDiv = document.getElementById('chatHistory');
-            chatHistoryDiv.innerHTML = '';
-
-            chatHistory.forEach((message, index) => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message ${message.role === 'user' ? 'user-message' : 'assistant-message'}`;
-                
-                const icon = message.role === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
-                const role = message.role === 'user' ? 'You' : 'Assistant';
-                
-                messageDiv.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 600;">
-                        ${icon} ${role}
-                    </div>
-                    <div>${marked.parse(message.content)}</div>
-                `;
-                
-                chatHistoryDiv.appendChild(messageDiv);
-            });
-
-            // Scroll to bottom
-            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
-        }
-
-        function displayResponse(data) {
-            const responseSection = document.getElementById('responseSection');
-            const categoryBadge = document.getElementById('categoryBadge');
-            const responseContent = document.getElementById('responseContent');
-
-            // Map categories to readable names and icons
-            const categoryMap = {
-                '1': { name: 'Learning Resources', icon: 'fas fa-graduation-cap' },
-                '2': { name: 'Resume Making', icon: 'fas fa-file-alt' },
-                '3': { name: 'Interview Preparation', icon: 'fas fa-comments' },
-                '4': { name: 'Job Search', icon: 'fas fa-search' },
-                'Tutorial': { name: 'Tutorial Creation', icon: 'fas fa-book' },
-                'Question': { name: 'Q&A Session', icon: 'fas fa-question-circle' },
-                'Mock': { name: 'Mock Interview', icon: 'fas fa-microphone' },
-                'unknown': { name: 'General', icon: 'fas fa-info-circle' }
-            };
-
-            const categoryInfo = categoryMap[data.category] || categoryMap['unknown'];
-            categoryBadge.innerHTML = `<i class="${categoryInfo.icon}"></i> ${categoryInfo.name}`;
-            
-            // Parse markdown and display response
-            const parsedContent = marked.parse(data.response);
-            responseContent.innerHTML = parsedContent;
-
-            // Highlight code blocks
-            responseContent.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
-
-            responseSection.classList.add('show');
-        }
-
-        function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-            errorMessage.style.display = 'block';
-        }
-
-        // Handle Enter key in textarea (Shift+Enter for new line, Enter to submit)
-        document.getElementById('queryInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                submitQuery();
-            }
-        });
-
-        // Check API health on page load
-        async function checkAPIHealth() {
-            try {
-                const response = await fetch('http://127.0.0.1:8000/health');
-                if (response.ok) {
-                    console.log('API is healthy');
-                } else {
-                    showError('API server is not responding properly. Please check the server status.');
-                }
-            } catch (error) {
-                console.error('API health check failed:', error);
-                showError('Cannot connect to API server. Please ensure the server is running on http://127.0.0.1:8000');
-            }
-        }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check API health
-            checkAPIHealth();
-
-            // Auto-focus on query input when section is in view
-            const querySection = document.getElementById('assistant');
-            const queryObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            document.getElementById('queryInput').focus();
-                        }, 500);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            queryObserver.observe(querySection);
-
-            // Initialize marked options for better markdown rendering
-            marked.setOptions({
-                highlight: function(code, lang) {
-                    if (lang && hljs.getLanguage(lang)) {
-                        try {
-                            return hljs.highlight(code, { language: lang }).value;
-                        } catch (__) {}
-                    }
-                    return hljs.highlightAuto(code).value;
-                },
-                breaks: true,
-                gfm: true
             });
         });
 
-        // Add example query functions
-        function addExampleQuery(query) {
-            document.getElementById('queryInput').value = query;
-            document.getElementById('queryInput').focus();
-        }
+        // Periodic server status check
+        setInterval(checkServerStatus, 30000); // Check every 30 seconds
 
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            if (conversationActive && sessionId) {
-                // Attempt to clear session (may not complete due to page unload)
-                navigator.sendBeacon(`http://127.0.0.1:8000/session/${sessionId}`, '');
-            }
+        // Handle offline/online events
+        window.addEventListener('online', () => {
+            updateStatus('online');
+            checkServerStatus();
         });
+
+        window.addEventListener('offline', () => {
+            updateStatus('offline');
+        });
+    </script>
+</body>
+</html>
