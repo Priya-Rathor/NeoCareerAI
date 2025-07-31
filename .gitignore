@@ -3,3 +3,87 @@ venv/
 .env
 .env.*
  __pycache__/
+
+
+ # =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+
+# =========================
+# Virtual Environment
+# =========================
+venv/
+.env
+.env.*
+# Uncomment the next line only if you have a directory named `.env/`
+# .env/
+
+# =========================
+# VSCode
+# =========================
+.vscode/
+
+# =========================
+# MacOS and Linux
+# =========================
+.DS_Store
+*.swp
+*.swo
+
+# =========================
+# Windows
+# =========================
+Thumbs.db
+ehthumbs.db
+
+# =========================
+# Logs and temp files
+# =========================
+*.log
+*.tmp
+*.bak
+
+# =========================
+# Pytest and Cache
+# =========================
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Coverage
+# =========================
+.coverage
+htmlcov/
+coverage.xml
+
+# =========================
+# FastAPI + Uvicorn
+# =========================
+*.sqlite3
+instance/
+
+# =========================
+# LangChain / Vector DB
+# =========================
+*.faiss
+*.chroma/
+
+# =========================
+# Build artifacts
+# =========================
+build/
+dist/
+*.egg-info/
+*.whl
