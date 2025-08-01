@@ -4,8 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GenAI Career Assistant</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,39 +38,53 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f4ff 100%);
             min-height: 100vh;
-            color: #333;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
 
         /* Header */
         .header {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: all 0.3s ease;
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 1rem 2rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
         }
 
         .nav-menu {
@@ -56,18 +95,34 @@
 
         .nav-menu a {
             text-decoration: none;
-            color: #333;
+            color: var(--text-secondary);
             font-weight: 500;
-            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-menu a:hover {
-            color: #667eea;
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
         }
 
         /* Main Container */
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -75,101 +130,268 @@
         /* Hero Section */
         .hero {
             text-align: center;
-            color: white;
-            margin-bottom: 3rem;
+            padding: 4rem 0;
+            margin-bottom: 4rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
         /* Service Cards */
         .services {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .service-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.4s ease;
             cursor: pointer;
-            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-color: #667eea;
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .service-card.active {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.02);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-card.active::before {
+            transform: scaleX(1);
         }
 
         .service-icon {
-            font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 1rem;
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-card[data-service="learning"] .service-icon {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1d4ed8;
+        }
+
+        .service-card[data-service="resume"] .service-icon {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #059669;
+        }
+
+        .service-card[data-service="interview"] .service-icon {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #d97706;
+        }
+
+        .service-card[data-service="jobs"] .service-icon {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #7c3aed;
         }
 
         .service-card h3 {
             font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            color: #333;
+            color: var(--text-primary);
         }
 
         .service-card p {
-            color: #666;
+            color: var(--text-secondary);
             line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .feature-tag {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
         /* Chat Interface */
         .chat-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            height: 600px;
+            height: 700px;
             display: flex;
             flex-direction: column;
+            border: 1px solid var(--border-color);
         }
 
         .chat-header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 1.5rem;
+            padding: 2rem;
             text-align: center;
+            position: relative;
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid var(--secondary-color);
+        }
+
+        .chat-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 1rem;
         }
 
         .chat-messages {
             flex: 1;
-            padding: 1rem;
+            padding: 2rem;
             overflow-y: auto;
-            background: #f8f9fa;
+            background: var(--bg-secondary);
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
         }
 
         .message {
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: 1rem;
+            animation: fadeInUp 0.5s ease;
         }
 
         .message.user {
@@ -183,90 +405,178 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: white;
+            flex-shrink: 0;
         }
 
         .message.user .message-avatar {
-            background: #667eea;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         }
 
         .message.assistant .message-avatar {
-            background: #28a745;
+            background: linear-gradient(135deg, var(--success-color), var(--accent-color));
         }
 
         .message-content {
-            background: white;
-            padding: 1rem;
-            border-radius: 15px;
-            max-width: 70%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 75%;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            position: relative;
         }
 
         .message.user .message-content {
-            background: #667eea;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
+            border: none;
+        }
+
+        .message-content::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+        }
+
+        .message.user .message-content::before {
+            right: -16px;
+            border-left-color: var(--secondary-color);
+        }
+
+        .message.assistant .message-content::before {
+            left: -16px;
+            border-right-color: var(--bg-primary);
         }
 
         .message-content pre {
-            background: #f8f9fa;
+            background: var(--bg-secondary);
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             overflow-x: auto;
             margin: 0.5rem 0;
+            border: 1px solid var(--border-color);
         }
 
         .message.user .message-content pre {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 1.5rem;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .quick-actions h4 {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
         }
 
         /* Input Area */
         .chat-input {
-            padding: 1.5rem;
-            background: white;
-            border-top: 1px solid #eee;
+            padding: 2rem;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
         }
 
         .input-group {
             display: flex;
-            gap: 10px;
-            align-items: center;
+            gap: 1rem;
+            align-items: flex-end;
         }
 
         .chat-input input {
             flex: 1;
-            padding: 1rem;
-            border: 2px solid #eee;
-            border-radius: 25px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-xl);
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
         }
 
         .chat-input input:focus {
-            border-color: #667eea;
+            border-color: var(--primary-color);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
         .send-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow-md);
         }
 
         .send-btn:hover {
-            transform: scale(1.1);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-lg);
         }
 
         .send-btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
@@ -275,7 +585,7 @@
         .loading {
             display: none;
             text-align: center;
-            padding: 1rem;
+            padding: 2rem;
         }
 
         .loading.show {
@@ -283,13 +593,18 @@
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--primary-color);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+        }
+
+        .loading p {
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         @keyframes spin {
@@ -297,45 +612,115 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Quick Actions */
-        .quick-actions {
-            padding: 1rem;
-            background: #f8f9fa;
-            border-top: 1px solid #eee;
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .quick-actions h4 {
-            margin-bottom: 0.5rem;
-            color: #666;
-            font-size: 0.9rem;
+        /* Status Indicator */
+        .status-indicator {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.875rem;
+            font-weight: 600;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+        .status-indicator.online {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
-        .action-btn {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+        .status-indicator.offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border-color: rgba(239, 68, 68, 0.3);
         }
 
-        .action-btn:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+        /* Features Section */
+        .features {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 4rem 0;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .features-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-item h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-container {
-                padding: 0 1rem;
+                padding: 1rem;
             }
 
             .nav-menu {
@@ -343,7 +728,11 @@
             }
 
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
             }
 
             .container {
@@ -352,88 +741,67 @@
 
             .services {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
             .message-content {
                 max-width: 85%;
             }
+
+            .chat-container {
+                height: 600px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
-        /* Status Indicator */
-        .status-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 1001;
-            transition: all 0.3s;
-        }
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
 
-        .status-indicator.online {
-            background: #28a745;
-            color: white;
-        }
+            .service-card {
+                padding: 1.5rem;
+            }
 
-        .status-indicator.offline {
-            background: #dc3545;
-            color: white;
-        }
+            .chat-messages {
+                padding: 1rem;
+            }
 
-        /* Features Section */
-        .features {
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        .features h2 {
-            color: white;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 15px;
-            color: white;
-        }
-
-        .feature-item i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #ffd700;
+            .chat-input {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Status Indicator -->
     <div class="status-indicator online" id="statusIndicator">
-        <i class="fas fa-circle"></i> Online
+        <i class="fas fa-circle"></i> System Online
     </div>
 
     <!-- Header -->
     <header class="header">
         <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
                 GenAI Career Assistant
-            </div>
+            </a>
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
+                    <li><a href="#home" class="active">Home</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#chat">Assistant</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
                 </ul>
             </nav>
         </div>
@@ -442,8 +810,22 @@
     <div class="container">
         <!-- Hero Section -->
         <section class="hero" id="home">
+            <div class="hero-badge">
+                <i class="fas fa-sparkles"></i>
+                Powered by Advanced AI Technology
+            </div>
             <h1>Your AI-Powered Career Companion</h1>
-            <p>Master Generative AI, build your resume, prepare for interviews, and find your dream job - all in one place</p>
+            <p>Master Generative AI, build professional resumes, ace interviews, and discover your dream job opportunities - all powered by cutting-edge artificial intelligence</p>
+            <div class="hero-cta">
+                <a href="#chat" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Start Your Journey
+                </a>
+                <a href="#services" class="btn btn-secondary">
+                    <i class="fas fa-play"></i>
+                    Explore Services
+                </a>
+            </div>
         </section>
 
         <!-- Services Section -->
@@ -453,31 +835,51 @@
                     <i class="fas fa-graduation-cap"></i>
                 </div>
                 <h3>Learn Generative AI</h3>
-                <p>Interactive tutorials, documentation, and expert guidance to master AI technologies</p>
+                <p>Master the latest AI technologies with interactive tutorials, comprehensive documentation, and personalized learning paths designed by industry experts.</p>
+                <div class="service-features">
+                    <span class="feature-tag">Tutorials</span>
+                    <span class="feature-tag">Documentation</span>
+                    <span class="feature-tag">Q&A Support</span>
+                </div>
             </div>
 
             <div class="service-card" data-service="resume">
                 <div class="service-icon">
                     <i class="fas fa-file-alt"></i>
                 </div>
-                <h3>Resume Builder</h3>
-                <p>Create professional resumes tailored for AI and tech roles with industry best practices</p>
+                <h3>Smart Resume Builder</h3>
+                <p>Create ATS-optimized resumes tailored for AI and tech roles with industry-specific keywords, modern templates, and expert guidance.</p>
+                <div class="service-features">
+                    <span class="feature-tag">ATS Optimized</span>
+                    <span class="feature-tag">AI Tailored</span>
+                    <span class="feature-tag">Expert Review</span>
+                </div>
             </div>
 
             <div class="service-card" data-service="interview">
                 <div class="service-icon">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <h3>Interview Prep</h3>
-                <p>Mock interviews and curated questions to ace your AI engineering interviews</p>
+                <h3>Interview Mastery</h3>
+                <p>Prepare for success with realistic mock interviews, curated question banks, and detailed feedback to boost your confidence.</p>
+                <div class="service-features">
+                    <span class="feature-tag">Mock Interviews</span>
+                    <span class="feature-tag">Question Bank</span>
+                    <span class="feature-tag">Performance Analysis</span>
+                </div>
             </div>
 
             <div class="service-card" data-service="jobs">
                 <div class="service-icon">
                     <i class="fas fa-search"></i>
                 </div>
-                <h3>Job Search</h3>
-                <p>Find relevant AI and ML job opportunities tailored to your skills and location</p>
+                <h3>Intelligent Job Search</h3>
+                <p>Discover relevant AI and ML opportunities with smart filtering, salary insights, and personalized recommendations based on your skills.</p>
+                <div class="service-features">
+                    <span class="feature-tag">Smart Matching</span>
+                    <span class="feature-tag">Salary Insights</span>
+                    <span class="feature-tag">Location Based</span>
+                </div>
             </div>
         </section>
 
@@ -485,7 +887,7 @@
         <section class="chat-container" id="chat">
             <div class="chat-header">
                 <h2><i class="fas fa-comments"></i> AI Career Assistant</h2>
-                <p>Ask me anything about AI careers, learning, or job opportunities!</p>
+                <p>Your personal guide to AI career success. Ask me anything!</p>
             </div>
 
             <div class="chat-messages" id="chatMessages">
@@ -494,31 +896,30 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="message-content">
-                        <p>Hello! I'm your GenAI Career Assistant. I can help you with:</p>
-                        <ul>
-                            <li>📚 Learning Generative AI technologies</li>
-                            <li>📄 Creating professional resumes</li>
-                            <li>🎯 Interview preparation and mock interviews</li>
-                            <li>💼 Finding relevant job opportunities</li>
-                        </ul>
-                        <p>How can I assist you today?</p>
+                        <p>👋 Welcome to your AI Career Assistant! I'm here to help you succeed in the world of Generative AI.</p>
+                        <p><strong>I can help you with:</strong></p>
+                        <p>🎓 <strong>Learning AI Technologies</strong> - Tutorials, explanations, and hands-on guidance<br>
+                        📄 <strong>Professional Resume Building</strong> - ATS-optimized resumes for tech roles<br>
+                        🎯 <strong>Interview Preparation</strong> - Mock interviews and expert tips<br>
+                        💼 <strong>Job Search Strategy</strong> - Find opportunities that match your skills</p>
+                        <p>What would you like to explore first?</p>
                     </div>
                 </div>
             </div>
 
             <div class="quick-actions">
-                <h4>Quick Actions:</h4>
+                <h4>Popular Requests</h4>
                 <div class="action-buttons">
-                    <button class="action-btn" onclick="sendQuickMessage('Create a tutorial on transformer models')">
-                        <i class="fas fa-book"></i> AI Tutorial
+                    <button class="action-btn" onclick="sendQuickMessage('Create a comprehensive tutorial on transformer models and attention mechanisms')">
+                        <i class="fas fa-book-open"></i> AI Tutorial
                     </button>
-                    <button class="action-btn" onclick="sendQuickMessage('Help me create a resume for AI Engineer position')">
-                        <i class="fas fa-file"></i> Build Resume
+                    <button class="action-btn" onclick="sendQuickMessage('Help me create a professional resume for Senior AI Engineer position with 5 years experience')">
+                        <i class="fas fa-file-user"></i> Build Resume
                     </button>
-                    <button class="action-btn" onclick="sendQuickMessage('Start a mock interview for machine learning engineer')">
-                        <i class="fas fa-microphone"></i> Mock Interview
+                    <button class="action-btn" onclick="sendQuickMessage('I want to start a mock interview for machine learning engineer role')">
+                        <i class="fas fa-microphone-alt"></i> Mock Interview
                     </button>
-                    <button class="action-btn" onclick="sendQuickMessage('Looking for AI Engineer jobs in San Francisco')">
+                    <button class="action-btn" onclick="sendQuickMessage('Looking for AI Engineer jobs in San Francisco with competitive salary')">
                         <i class="fas fa-briefcase"></i> Find Jobs
                     </button>
                 </div>
@@ -526,12 +927,12 @@
 
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p>Processing your request...</p>
+                <p>AI is thinking and processing your request...</p>
             </div>
 
             <div class="chat-input">
                 <div class="input-group">
-                    <input type="text" id="messageInput" placeholder="Ask me about AI careers, learning, interviews, or job search..." autocomplete="off">
+                    <input type="text" id="messageInput" placeholder="Ask me about AI careers, learning resources, interviews, or job opportunities..." autocomplete="off">
                     <button class="send-btn" id="sendBtn" onclick="sendMessage()">
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -540,28 +941,45 @@
         </section>
 
         <!-- Features Section -->
-        <section class="features">
+        <section class="features" id="features">
             <h2>Why Choose Our AI Career Assistant?</h2>
+            <p class="features-subtitle">Experience the future of career development with our comprehensive AI-powered platform designed for success in the modern tech landscape.</p>
+            
             <div class="feature-grid">
                 <div class="feature-item">
                     <i class="fas fa-brain"></i>
-                    <h4>AI-Powered Guidance</h4>
-                    <p>Get personalized career advice powered by advanced AI technology</p>
+                    <h4>Advanced AI Intelligence</h4>
+                    <p>Powered by state-of-the-art language models that understand your unique career goals and provide personalized, actionable advice.</p>
                 </div>
+                
                 <div class="feature-item">
                     <i class="fas fa-clock"></i>
                     <h4>24/7 Availability</h4>
-                    <p>Access career assistance anytime, anywhere with our always-on AI assistant</p>
+                    <p>Access expert career guidance anytime, anywhere. Our AI assistant never sleeps, ensuring you get help whenever inspiration strikes.</p>
                 </div>
+                
                 <div class="feature-item">
                     <i class="fas fa-chart-line"></i>
-                    <h4>Industry Insights</h4>
-                    <p>Stay updated with the latest trends and requirements in AI and tech industries</p>
+                    <h4>Real-time Industry Insights</h4>
+                    <p>Stay ahead with up-to-date information on AI trends, salary benchmarks, and emerging opportunities in the tech ecosystem.</p>
                 </div>
+                
                 <div class="feature-item">
                     <i class="fas fa-users"></i>
-                    <h4>Expert Knowledge</h4>
-                    <p>Benefit from knowledge curated by industry experts and successful professionals</p>
+                    <h4>Expert-Curated Content</h4>
+                    <p>Benefit from knowledge distilled from industry leaders, successful professionals, and cutting-edge research in AI and machine learning.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-target"></i>
+                    <h4>Personalized Learning Paths</h4>
+                    <p>Receive customized recommendations based on your current skill level, career aspirations, and learning preferences.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Privacy & Security</h4>
+                    <p>Your data and conversations are protected with enterprise-grade security measures and privacy-first design principles.</p>
                 </div>
             </div>
         </section>
@@ -581,25 +999,23 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
             checkServerStatus();
             setupEventListeners();
+            setupServiceCards();
+            setupSmoothScrolling();
+            setupNavigation();
             
-            // Auto-scroll to chat section when service cards are clicked
-            document.querySelectorAll('.service-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    // Remove active class from all cards
-                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
-                    // Add active class to clicked card
-                    this.classList.add('active');
-                    
-                    // Scroll to chat
-                    document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
-                    
-                    // Set focus to input
-                    setTimeout(() => messageInput.focus(), 500);
-                });
-            });
-        });
+            // Auto-focus input after a brief delay
+            setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    messageInput.focus();
+                }
+            }, 1000);
+        }
 
         function setupEventListeners() {
             // Enter key to send message
@@ -610,16 +1026,107 @@
                 }
             });
 
-            // Auto-resize input
+            // Auto-resize input (convert to textarea-like behavior)
             messageInput.addEventListener('input', function() {
+                // Reset height to auto to get the correct scrollHeight
                 this.style.height = 'auto';
+                // Set the height to scrollHeight, with max height constraint
                 this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', handleWindowResize);
+            
+            // Handle online/offline events
+            window.addEventListener('online', () => {
+                updateStatus('online');
+                checkServerStatus();
+            });
+
+            window.addEventListener('offline', () => {
+                updateStatus('offline');
+            });
+        }
+
+        function setupServiceCards() {
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Scroll to chat with smooth animation
+                    document.getElementById('chat').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    // Set focus to input after scroll
+                    setTimeout(() => {
+                        messageInput.focus();
+                        // Add a subtle pulse effect to the input
+                        messageInput.style.animation = 'pulse 0.5s ease';
+                        setTimeout(() => {
+                            messageInput.style.animation = '';
+                        }, 500);
+                    }, 800);
+                });
+            });
+        }
+
+        function setupSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            // Update active nav link on scroll
+            window.addEventListener('scroll', () => {
+                let current = '';
+                const sections = document.querySelectorAll('section[id]');
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
             });
         }
 
         async function checkServerStatus() {
             try {
-                const response = await fetch(`${API_BASE_URL}/docs`);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch(`${API_BASE_URL}/docs`, {
+                    signal: controller.signal,
+                    method: 'GET'
+                });
+                
+                clearTimeout(timeoutId);
+                
                 if (response.ok) {
                     updateStatus('online');
                 } else {
@@ -633,9 +1140,12 @@
         function updateStatus(status) {
             const indicator = statusIndicator;
             indicator.className = `status-indicator ${status}`;
-            indicator.innerHTML = status === 'online' 
-                ? '<i class="fas fa-circle"></i> Online' 
-                : '<i class="fas fa-times-circle"></i> Offline';
+            
+            if (status === 'online') {
+                indicator.innerHTML = '<i class="fas fa-circle"></i> System Online';
+            } else {
+                indicator.innerHTML = '<i class="fas fa-exclamation-triangle"></i> System Offline';
+            }
         }
 
         async function sendMessage() {
@@ -656,22 +1166,37 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ query: message })
+                    body: JSON.stringify({ query: message }),
+                    signal: AbortSignal.timeout(60000) // 60 second timeout
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Server responded with status: ${response.status}`);
                 }
 
                 const data = await response.json();
                 
-                // Add assistant response
-                addMessage(data.response, 'assistant', data.category);
+                // Add assistant response with typing effect
+                setTimeout(() => {
+                    addMessage(data.response, 'assistant', data.category);
+                }, 500);
                 
                 updateStatus('online');
             } catch (error) {
                 console.error('Error:', error);
-                addMessage('Sorry, I encountered an error. Please check if the server is running and try again.', 'assistant', 'error');
+                let errorMessage = 'I apologize, but I encountered an issue processing your request. ';
+                
+                if (error.name === 'TimeoutError') {
+                    errorMessage += 'The request timed out. Please try again with a shorter query.';
+                } else if (error.message.includes('500')) {
+                    errorMessage += 'The server is experiencing issues. Please try again in a moment.';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage += 'Please ensure the server is running on http://localhost:8000 and try again.';
+                } else {
+                    errorMessage += 'Please check your connection and try again.';
+                }
+                
+                addMessage(errorMessage, 'assistant', 'error');
                 updateStatus('offline');
             } finally {
                 toggleLoading(false);
@@ -689,7 +1214,9 @@
 
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
-            avatar.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            avatar.innerHTML = sender === 'user' 
+                ? '<i class="fas fa-user"></i>' 
+                : '<i class="fas fa-robot"></i>';
 
             const messageContent = document.createElement('div');
             messageContent.className = 'message-content';
@@ -705,40 +1232,57 @@
             scrollToBottom();
 
             // Add to conversation history
-            conversationHistory.push({ sender, content, category, timestamp: new Date() });
+            conversationHistory.push({ 
+                sender, 
+                content, 
+                category, 
+                timestamp: new Date().toISOString() 
+            });
+
+            // Keep conversation history manageable
+            if (conversationHistory.length > 50) {
+                conversationHistory = conversationHistory.slice(-30);
+            }
         }
 
         function formatMessage(content, category) {
-            // Handle markdown-style formatting
+            // Enhanced markdown-style formatting
             let formatted = content
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/`(.*?)`/g, '<code style="background: rgba(99, 102, 241, 0.1); padding: 2px 4px; border-radius: 4px; font-size: 0.9em;">$1</code>')
+                .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
 
-            // Handle lists
-            formatted = formatted.replace(/^\- (.*$)/gim, '<li>$1</li>');
-            formatted = formatted.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+            // Wrap in paragraphs
+            if (!formatted.includes('<p>') && !formatted.includes('<pre>') && !formatted.includes('<ul>')) {
+                formatted = '<p>' + formatted + '</p>';
+            }
+
+            // Enhanced list handling
+            formatted = formatted.replace(/^[\-\*] (.*$)/gim, '<li>$1</li>');
+            formatted = formatted.replace(/(<li>.*<\/li>)/s, '<ul style="margin: 0.5rem 0; padding-left: 1.5rem;">$1</ul>');
 
             // Handle numbered lists
             formatted = formatted.replace(/^\d+\. (.*$)/gim, '<li>$1</li>');
 
-            // Handle links
-            formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            // Enhanced link handling
+            formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">$1 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a>');
 
             // Add category badge if present
             if (category && category !== 'general') {
                 const badges = {
-                    'learning': '<span class="badge" style="background: #28a745;">🎓 Learning</span>',
-                    'resume': '<span class="badge" style="background: #17a2b8;">📄 Resume</span>',
-                    'interview': '<span class="badge" style="background: #ffc107; color: #000;">🎯 Interview</span>',
-                    'jobs': '<span class="badge" style="background: #6f42c1;">💼 Jobs</span>',
-                    'error': '<span class="badge" style="background: #dc3545;">❌ Error</span>'
+                    'learning': '<span class="badge" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1d4ed8;">🎓 Learning</span>',
+                    'resume': '<span class="badge" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #059669;">📄 Resume</span>',
+                    'interview': '<span class="badge" style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706;">🎯 Interview</span>',
+                    'jobs': '<span class="badge" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed;">💼 Jobs</span>',
+                    'error': '<span class="badge" style="background: linear-gradient(135deg, #fecaca, #fca5a5); color: #dc2626;">❌ Error</span>'
                 };
                 
-                if (badges[category.toLowerCase()]) {
-                    formatted = badges[category.toLowerCase()] + '<br>' + formatted;
+                const categoryLower = category.toLowerCase();
+                if (badges[categoryLower]) {
+                    formatted = badges[categoryLower] + '<br><br>' + formatted;
                 }
             }
 
@@ -751,7 +1295,11 @@
             messageInput.disabled = show;
             
             if (show) {
+                messageInput.placeholder = 'AI is processing your request...';
                 scrollToBottom();
+            } else {
+                messageInput.placeholder = 'Ask me about AI careers, learning resources, interviews, or job opportunities...';
+                messageInput.focus();
             }
         }
 
@@ -759,32 +1307,69 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        function handleWindowResize() {
+            // Adjust chat container height on mobile
+            if (window.innerWidth <= 768) {
+                const chatContainer = document.querySelector('.chat-container');
+                const viewportHeight = window.innerHeight;
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const availableHeight = viewportHeight - headerHeight - 100; // 100px for margins
+                
+                if (availableHeight < 600) {
+                    chatContainer.style.height = Math.max(400, availableHeight) + 'px';
                 }
-            });
-        });
+            }
+        }
 
         // Periodic server status check
         setInterval(checkServerStatus, 30000); // Check every 30 seconds
 
-        // Handle offline/online events
-        window.addEventListener('online', () => {
-            updateStatus('online');
-            checkServerStatus();
-        });
-
-        window.addEventListener('offline', () => {
-            updateStatus('offline');
-        });
+        // Add some CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+                70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .message {
+                animation: fadeIn 0.5s ease-out;
+            }
+            
+            .service-card:hover .service-icon {
+                transform: scale(1.1) rotate(5deg);
+            }
+            
+            .btn:active {
+                transform: translateY(1px);
+            }
+            
+            /* Enhanced scrollbar for webkit browsers */
+            .chat-messages::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            .chat-messages::-webkit-scrollbar-track {
+                background: var(--bg-tertiary);
+                border-radius: 4px;
+            }
+            
+            .chat-messages::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border-radius: 4px;
+            }
+            
+            .chat-messages::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-color);
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
