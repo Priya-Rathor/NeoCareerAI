@@ -12,12 +12,19 @@ import os
 from datetime import datetime
 from IPython.display import display , Image , Markdown
 from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+import os
 
 # Load environment variables
 load_dotenv()
 
 # Initialize LLM
-llm = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-pro",
+    temperature=0,
+    google_api_key=os.getenv("GOOGLE_API_KEY")
+)
+
 
 # DuckDuckGo search tool
 
